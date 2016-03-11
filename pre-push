@@ -2,7 +2,7 @@
 
 CURRENT_GIT_REPO=`git remote -v |head -1 |awk '{print $2}'`
 pushd . > /dev/null 2>&1
-rm -rf /tmp/tmp_repo
+rm -rf /tmp/tmp_repo; mkdir -p /tmp/tmp_repo;
 #echo "cloning $CURRENT_GIT_REPO"
 git clone --depth 1 $CURRENT_GIT_REPO /tmp/tmp_repo > /dev/null 2>&1
 cd /tmp/tmp_repo
