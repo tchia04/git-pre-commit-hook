@@ -1,0 +1,61 @@
+[user]
+	email = tchia04@gmail.com
+	name = Tony Chia
+[branch]
+	autosetuprebase = always
+[color]
+	ui = auto
+[branch "master"]
+	rebase = false
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+
+# Highlight whitespace in diffs
+
+#[color]
+#    ui = true
+#[color "diff"]
+#    whitespace = red reverse
+#[core]
+#    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+
+[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff --color-words
+    dc = diff --cached
+    lg = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ls = ls-files
+
+    # Show files ignored by git:
+    ign = ls-files -o -i --exclude-standard
+    # Usage: git squash N
+    squash = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
+    pr = "!f() { git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1; }; f"
+
+[hub]
+	host = github.com
+	protocol = ssh
+[init]
+	templatedir = ~/.git-templates
+
+#[push]
+#default = simple
+
