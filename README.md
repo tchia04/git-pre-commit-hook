@@ -1,5 +1,5 @@
 
-This repo contains a client side pre-commit and pre-push script that prevent you from commiting to the default branch which usually it's the master directly.
+This repo contains two client side (pre-commit and pre-push) scripts that prevent you from commiting to the default branch which usually it's the master directly.
 
 It also prevent you from pushing your default branch to the origin repo.
 
