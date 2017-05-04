@@ -1,5 +1,5 @@
 #!/bin/bash
 set -x
 
-#sh ./protect_default_branch
-sh ./check_file_size
+#bash ./protect_default_branch
+bash ./check_file_size
