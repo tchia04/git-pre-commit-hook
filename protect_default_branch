@@ -1,0 +1,21 @@
+#!/bin/sh
+
+CURRENT_GIT_REPO=`git remote -v |head -1 |awk '{print $2}'`
+pushd . > /dev/null 2>&1
+rm -rf /tmp/tmp_repo; mkdir -p /tmp/tmp_repo;
+#echo "cloning $CURRENT_GIT_REPO"
+git clone --depth 1 $CURRENT_GIT_REPO /tmp/tmp_repo > /dev/null 2>&1
+cd /tmp/tmp_repo
+DEFAULT_GIT_BRANCH=`git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/\1/'`
+popd > /dev/null 2>&1 
+protected_branch=$DEFAULT_GIT_BRANCH
+current_branch=`git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,'`
+
+#echo "current_branch = $current_branch"
+#echo "protected_branch = $protected_branch"
+if [ ${current_branch} = ${protected_branch} ]; then \
+    echo "Direct push to the $protected_branch branch is not allowed"
+    exit 1
+fi
+
+rm -rf /tmp/tmp_repo
