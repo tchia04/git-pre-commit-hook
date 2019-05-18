@@ -2,7 +2,7 @@
 
 
 echo "Enable git templates"
-git config --global init.templatedir '~/.git-templates'
+git config --global init.templatedir "$HOME/.git-templates"
 
 echo -e "\nCreate a directory (~/.git-templates/hooks) to hold the global hoooks"
 mkdir -p ~/.git-templates/hooks
@@ -17,7 +17,7 @@ ALL_GIT_REPOS=$(find /tmp/ -name .git  | sed 's/\.git//g')
 
 for repo in $ALL_GIT_REPOS; do
   echo -e "\nRunning git init on $repo under $DIR to copy the global hook";
-  cd $repo; git init;
+  cd "$repo"; git init;
 done;
 
 
