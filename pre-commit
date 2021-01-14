@@ -1,3 +1,60 @@
-#!/bin/sh
+#!/bin/bash
+#set -x
 
-sh ./protect_default_branch
+########################################################
+
+function Check_Default_Branch {
+  CURRENT_GIT_REPO=`git remote -v |head -1 |awk '{print $2}'`
+  pushd . > /dev/null 2>&1
+  rm -rf /tmp/tmp_repo; mkdir -p /tmp/tmp_repo;
+  #echo "cloning $CURRENT_GIT_REPO"
+  git clone --depth 1 $CURRENT_GIT_REPO /tmp/tmp_repo > /dev/null 2>&1
+  cd /tmp/tmp_repo
+  DEFAULT_GIT_BRANCH=`git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/\1/'`
+  popd > /dev/null 2>&1
+  protected_branch=$DEFAULT_GIT_BRANCH
+  current_branch=`git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,'`
+
+  #echo "current_branch = $current_branch"
+  #echo "protected_branch = $protected_branch"
+  if [ ${current_branch} = ${protected_branch} ]; then \
+    echo "Direct push to the $protected_branch branch is not allowed"
+    exit 1
+  fi
+
+  rm -rf /tmp/tmp_repo
+}
+
+########################################################
+
+function Is_File_OK_For_Commit {
+  if [ "$1" == "" ]; then
+    echo "Please enter a file name"
+  	exit 1
+  fi
+  FILENAME="$1"
+  SIZE=$(du -k $FILENAME | awk '{ print $1 }')
+
+  if ((SIZE<50000)) ; then
+    echo "  ${SIZE} kb is less than 50 mb.safe for git commit ";
+		return 0
+  else
+    echo "  ${SIZE} kb is greater than 50 mb. not safe for git commit";
+		return 1
+  fi
+}
+
+function Check_File_Size {
+
+  echo -e "\nChecking to see if any of the changed files exceed the 50 MB limit"
+  for file in $(git diff --cached --name-only); do
+    echo "Checking $file"
+    Is_File_OK_For_Commit "$file"
+  done;
+}
+########################################################
+
+# Comment / Uncomment the following to suit your need
+Check_Default_Branch
+Check_File_Size
+
