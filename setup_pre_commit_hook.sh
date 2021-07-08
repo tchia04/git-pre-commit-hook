@@ -22,7 +22,7 @@ echo -e "\nFind all the git repos under $GIT_REPO_DIR directory"
 #ALL_GIT_REPOS=$(find /tmp/ -name .git  | sed 's/\.git//g')
 ALL_GIT_REPOS=$(find $GIT_REPO_DIR -name .git  | sed 's/\.git//g')
 
-for repo in $ALL_GIT_REPOS; do
+for repo in "$ALL_GIT_REPOS"; do
   echo -e "\nRunning git init on $repo under $DIR to copy the global hook";
   cd "$repo"; git init;
 done;
