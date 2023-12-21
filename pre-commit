@@ -10,7 +10,8 @@ function Check_Default_Branch {
   #echo "cloning $CURRENT_GIT_REPO"
   git clone --depth 1 $CURRENT_GIT_REPO /tmp/tmp_repo > /dev/null 2>&1
   cd /tmp/tmp_repo
-  DEFAULT_GIT_BRANCH=`git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/\1/'`
+  #DEFAULT_GIT_BRANCH=`git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/\1/'`
+  DEFAULT_GIT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
   popd > /dev/null 2>&1
   protected_branch=$DEFAULT_GIT_BRANCH
   current_branch=`git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,'`
